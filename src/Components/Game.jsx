@@ -1,51 +1,57 @@
-import React, {useState} from 'react';
-import Board from './Board';
-import { checkWinner } from '../helpers';
-
-const styles = {
-    width: '200px',
-    margin: '20px auto',
-
-
-}
+import React, { useState } from "react";
+import Board from "./Board";
+import { checkWinner } from "../helpers";
+import "../Style.css";
 
 const Game = () => {
+  const [board, setBoard] = useState(Array(9).fill(null));
+  const [xIsNext, setXisNext] = useState(true);
+  let winner = checkWinner(board);
+  const [winnerSquares, setWinnerSquares] = useState(null);
 
-    const [board, setBoard] = useState(Array(9).fill(null))
-    const [xIsNext, setXisNext] = useState(true)
-    const winner = checkWinner(board)
+  const winnerConfirm = () => {
+    if (winner) setWinnerSquares(winner[1]);
+    winnerSquares && console.log(winnerSquares);
+  };
 
+  const handleClick = (i) => {
+    const boardcpy = [...board];
 
-    const handleClick = i => {
-        const boardcpy = [...board]
-
-        console.log(i + " is clicked\n")
-
-        if (winner || boardcpy[i]) return
-        
-        boardcpy[i] = xIsNext ? 'X' : 'O'
-
-        setBoard(boardcpy)
-        setXisNext(!xIsNext)
+    if ((winner && winner[0]) || boardcpy[i]) {
+      winnerConfirm();
+      return;
     }
 
-    const renderMoves = () => 
-        ( <button onClick = {() => setBoard(Array(9).fill(null))}>
-            START THE GAME
-        </button> )
-    
+    console.log(i + " is clicked\n");
 
-    return (
-        <div>
-            <Board squares={board} onClick={handleClick} />
-            <div style={styles}>
-                <p>{winner ? 'Winner is : ' + winner : 'Next player turn : ' + (xIsNext ? 'X' : 'O')}</p>
-                {renderMoves()}
-            </div>
-        </div>
-        
-    )
-}
+    boardcpy[i] = xIsNext ? "X" : "O";
 
+    setBoard(boardcpy);
+    setXisNext(!xIsNext);
+  };
+
+  const restart = () => {
+    setBoard(Array(9).fill(null));
+    setWinnerSquares(null);
+    setXisNext(true);
+    winner = null;
+  };
+
+  return (
+    <div className="game-container">
+      <Board squares={board} onClick={handleClick} winner={winnerSquares} />
+      <div className="game">
+        <p>
+          {winner
+            ? "Winner is : " + winner[0]
+            : "Next player turn : " + (xIsNext ? "X" : "O")}
+        </p>
+        <button className="button" onClick={() => restart()}>
+          RESET
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default Game;

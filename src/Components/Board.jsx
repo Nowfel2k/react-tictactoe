@@ -1,42 +1,22 @@
-import React from 'react';
-import Square from './Square';
+import React from "react";
+import Square from "./Square";
+import "../Style.css";
 
-const style = {
-    border: '4px solid darkblue',
-    borderRadius: '10px',
-    width: '250px',
-    height: '250px',
-    margin: '0 auto',
-    display: 'grid',
-    gridTemplate: 'repeat(3, 1fr) / repeat(3, 1fr)'
-};
-
-const Board = ({ squares, onClick }) =>
-
-    (
-        <div style={style}>
-            {squares.map((square, i) => (
-                <Square key={i} value={square} onClick={() => onClick(i)} />
-            ))}
-        </div>
-    )
+const Board = ({ squares, onClick, winner }) => (
+  <div className="board">
+    {squares.map((square, i) =>
+      winner && (i === winner[0] || i === winner[1] || i === winner[2]) ? (
+        <Square
+          key={i}
+          value={square}
+          onClick={() => onClick(i)}
+          winnerSquare
+        />
+      ) : (
+        <Square key={i} value={square} onClick={() => onClick(i)} />
+      )
+    )}
+  </div>
+);
 
 export default Board;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

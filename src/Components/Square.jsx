@@ -1,20 +1,13 @@
-import React from 'react';
+import React from "react";
+import "../Style.css";
 
-const style = {
-    background: 'lightblue',
-    border: '2px solid darkblue',
-    fontSize: '30px',
-    fontWeight: '800',
-    cursor: 'pointer',
-    outline: 'none'
-}
-
-
-const Square = ({ value, onClick }) => (
-    <button style={style} onClick={onClick}>
-        { value }
-    </button>
-)
-
+const Square = ({ value, onClick, winnerSquare }) => (
+  <button
+    className={`square ${winnerSquare && "winnerSquare"}`}
+    onClick={onClick}
+  >
+    <h1>{value}</h1>
+  </button>
+);
 
 export default Square;
